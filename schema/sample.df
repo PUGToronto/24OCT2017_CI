@@ -1,0 +1,39 @@
+ADD SEQUENCE "ThingID"
+  INITIAL 0
+  INCREMENT 1
+  CYCLE-ON-LIMIT no
+  MIN-VAL 0
+
+ADD TABLE "Thing"
+  LABEL "Thing"
+  DESCRIPTION "Things for a demo"
+  DUMP-NAME "Thing"
+
+ADD FIELD "ThingID" OF "Thing" AS integer
+  FORMAT ">>>>>>>>>>9"
+  INITIAL "0"
+  LABEL "AcctAMSID"
+  MAX-WIDTH 4
+  COLUMN-LABEL "ID"
+  ORDER 70
+  MANDATORY
+
+ADD FIELD "BoolProperty" OF "Thing" AS logical
+  FORMAT "Yes/No"
+  INITIAL "No"
+  LABEL "BoolProperty"
+  POSITION 9
+  MAX-WIDTH 1
+  COLUMN-LABEL "BoolProp"
+  ORDER 80
+  MANDATORY
+
+ADD FIELD "Description" OF "Thing" AS character
+  DESCRIPTION "Description of the thing."
+  FORMAT "x(40)"
+  INITIAL ""
+  LABEL "Description"
+  POSITION 10
+  MAX-WIDTH 80
+  COLUMN-LABEL "Desc"
+  ORDER 90

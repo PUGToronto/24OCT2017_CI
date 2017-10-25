@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="tpug-ci-demo">
+
+<property environment="env" />
+ <taskdef resource="PCT.properties">
+   <classpath>
+    <pathelement location="PCT-208.jar"/>
+  </classpath>
+</taskdef>
+
+ <typedef resource="types.properties">
+   <classpath>
+    <pathelement location="PCT-208.jar"/>
+  </classpath>
+ </typedef>
+
+ <target name="init">
+   <tstamp>
+     <format property="timestamp" pattern="yyyy-MM-dd HH:mm:ss" />
+  </tstamp>
+   <echo>Build starting at ${timestamp}</echo>
+</target>
+
+<target name="clean" depends="init">
+  <delete dir="target" />
+</target>
+
+ <target name="create-database" depends="init">
+   <mkdir dir="target/db" />
+   <PCTCreateBase dbName="sample" destDir="target/db" schemaFile="schema/sample.df" dlcHome="${env.DLC}" />
+</target>
+
+ <target name="build" description="Builds the project">
+  <mkdir dir="target/build" />
+  <PCTCompile destDir="target/build" dlcHome="${env.DLC}">
+    <!-- this can have other entries -->
+    <propath>
+      <pathelement location="src"/>
+  </propath>
+   <fileset dir="src" includes="*.p" />
+   <PCTConnection dbName="sample" dbDir="target/db" singleUser="true"/>
+  </PCTCompile>
+ </target>
+
+ <target name="build-tests" description="Compile test programs">
+  <mkdir dir="target/build-tests" />
+  <PCTCompile destDir="target/build-tests" dlcHome="${env.DLC}">
+    <!-- this can have other entries -->
+    <propath>
+      <pathelement location="src"/>
+      <pathelement location="tests" />
+  </propath>
+   <fileset dir="src" includes="*.p" />
+   <fileset dir="tests" includes="*.p" />
+   <PCTConnection dbName="sample" dbDir="target/db" singleUser="true"/>
+  </PCTCompile>
+ </target>
+
+ <target name="test" depends="init" >
+   <mkdir dir="target/test-results" />
+   <ABLUnit destDir="target/test-results" dlcHome="${env.DLC}">
+     <fileset dir="tests" includes="*Test.p" />
+     <propath>
+       <pathelement path="src" />
+     </propath>
+   <PCTConnection dbName="sample" dbDir="target/db" singleUser="true"/>
+ </ABLUnit>
+ </target>
+
+ <target name="package" depends="init" >
+   <zip destfile="target/thingapp.zip"
+      basedir="target/build"
+      excludes=".pct/"
+      />
+ </target>
+</project>
