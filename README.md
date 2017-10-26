@@ -10,7 +10,8 @@ Then from the root folder you can run ant tasks
 
 The targets are:
 
-clean - removes the target/ folder
-create-database - create a database in target/db from the .df
-build - compiles the two .p's 
-test - runs the one test
+- *clean*  removes the target/ folder
+- *create-database*  create a database in target/db from the .df
+- *build* compiles the two .p's 
+- *test*  runs the one test
+- *package*  creates a .zip of the compiled r-code
